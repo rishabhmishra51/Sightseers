@@ -59,7 +59,7 @@ app.get("/listings/:id/edit", async (req,res)=>{
 app.put("/listings/:id",async (req,res)=>{
      let {id} = req.params;
    await Listing.findByIdAndUpdate(id,{...req.body.listing});
-   res.redirect("/listings");
+   res.redirect(`/listings/${id}`);
 });
 // app.get("/testlisting",async(req,res)=>{
 //    let sampleListing = new Listing({
