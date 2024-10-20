@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+<% layout("/layouts/boilerplate")%>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>WanderLust</title>
-</head>
+</head> -->
 <body>
      <h3>Listing Details</h3>
      <ul>
@@ -18,6 +19,9 @@
           <form method="get" action="/listings/<%=listing.id%>/edit">
                <button>Edit</button>
           </form>
+          <form method="post" action="/listings/<%=listing._id%>?_method=DELETE">
+               <button>Delete</button>
+          </form>
      </ul>
 </body>
-</html>
+<!-- </html> -->
