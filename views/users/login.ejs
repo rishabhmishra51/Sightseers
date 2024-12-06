@@ -1,7 +1,7 @@
 <% layout("/layouts/boilerplate")%>
 <div class="row mt-3">
 <div class="col-6 offset-3">
-     <form action="/signup" method="post" class="needs-validation" novalidate>
+     <form action="/listings" method="get" class="needs-validation" novalidate>
       
       <div class="mb-3">
             <h1 class=" offset-1"><b>Signup for Sightseers</b></h1>
@@ -10,15 +10,13 @@
             <div class="valid-feedback">Looks good.</div>
            </div>
 
-           <label for="Email" class="form-label">Email</label>
-            <input type="email"  name="listing[Email]" class="form-control" required>
+           
       
             <label for="Password" class="form-label">Password</label>
             <input type="password"  name="listing[Password]" class="form-control" required>
              <br>
           
             <button class="offset-5 btn btn-success">Signup</button>
-            
          
      </form>
       </div>

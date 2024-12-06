@@ -1,23 +1,30 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light border-bottom sticky-top">
-     <div class="container-fluid">
-       <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-       </button>
-       <div class="collapse navbar-collapse" id="navbarNav">
-         <ul class="navbar-nav">
-           <li class="nav-item">
-             <a class="nav-link active"  href="/">Home</a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="/listings">All Listings</a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="/listings/new">Add new Listings</a>
-           </li>
-      
-        
-         </ul>
-       </div>
-     </div>
-   </nav>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/listings">All Listings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/listings/new">Add New Listings</a>
+        </li>
+      </ul>
+      <!-- Add Login, Logout, and Sign Up Buttons -->
+      <div class="d-flex align-items-center">
+        <!-- Login Button -->
+        <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+        <!-- Logout Button (Replace with conditional rendering if needed) -->
+        <a href="/logout" class="btn btn-outline-danger me-2">Logout</a>
+        <!-- Sign Up Button -->
+        <a href="/signup" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override")
-const wrapAsync = require("./Utils/wrapAsyc.js")
+const wrapAsync = require("./Utils/wrapAsync.js")
 const ExpressError = require("./Utils/ExpressError.js");
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -67,6 +67,10 @@ app.get("/",(req,res)=>{
      res.send("Hi,I a root");
      
 })
+app.get("/logout",(req,res)=>{
+     res.send("successfully logged out from Sighseers");
+     
+});
 //index route
 app.get("/listings",wrapAsync(async (req,res)=>{
      const allListings = await Listing.find({});
@@ -125,6 +129,7 @@ app.delete("/listings/:id",wrapAsync(async (req,res)=>{
      await Listing.findByIdAndDelete(id);
      res.redirect("/listings");
 }));
+
 
 //review route
 //post review route
