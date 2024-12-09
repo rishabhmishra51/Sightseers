@@ -23,4 +23,5 @@ router.post("/signup",wrapAsync(async(req,res)=>{
           res.redirect("/signup");
      }
 }))
+
 module.exports=router;
