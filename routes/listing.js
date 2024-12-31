@@ -15,6 +15,7 @@ router.get("/new", (req, res) => {
     res.render("listings/new");
 });
 
+
 // Create Listing
 router.post("/", wrapAsync(async (req, res) => {
     if (!req.body.listing) {
