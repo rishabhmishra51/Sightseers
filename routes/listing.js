@@ -3,6 +3,7 @@ const router = express.Router();
 const wrapAsync = require("../Utils/wrapAsync.js");
 const ExpressError = require("../Utils/ExpressError.js");
 const Listing = require("../models/listing.js");
+const { isLoggedIn } = require("../middleware.js");
 
 // Index Route
 router.get("/", wrapAsync(async (req, res) => {
@@ -11,13 +12,13 @@ router.get("/", wrapAsync(async (req, res) => {
 }));
 
 // New Listing Form
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn,(req, res) => {
     res.render("listings/new");
 });
 
 
 // Create Listing
-router.post("/", wrapAsync(async (req, res) => {
+router.post("/",isLoggedIn, wrapAsync(async (req, res) => {
     if (!req.body.listing) {
         throw new ExpressError(400, "Invalid Listing Data");
     }
@@ -29,7 +30,7 @@ router.post("/", wrapAsync(async (req, res) => {
 
 // Show Listing
 router.get("/:id", wrapAsync(async (req, res, next) => {
-    const listing = await Listing.findById(req.params.id).populate("reviews");
+    const listing = await Listing.findById(req.params.id).populate("reviews").populate("owner");
     if (!listing) {
         throw new ExpressError("Listing not found!", 404);
     }
@@ -37,13 +38,13 @@ router.get("/:id", wrapAsync(async (req, res, next) => {
 }));
 
 // Edit Listing Form
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedIn,wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id);
     res.render("listings/edit", { listing });
 }));
 
 // Update Listing
-router.put("/:id", wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedIn,wrapAsync(async (req, res) => {
     if (!req.body.listing) {
         throw new ExpressError(400, "Invalid Listing Data");
     }
@@ -53,7 +54,7 @@ router.put("/:id", wrapAsync(async (req, res) => {
 }));
 
 // Delete Listing
-router.delete("/:id", wrapAsync(async (req, res) => {
+router.delete("/:id",isLoggedIn, wrapAsync(async (req, res) => {
     await Listing.findByIdAndDelete(req.params.id);
     req.flash("success", "Successfully deleted the listing!");
     res.redirect("/listings");

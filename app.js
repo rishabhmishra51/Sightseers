@@ -8,7 +8,9 @@ const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
 // const ExpressError = require("./Utils/ExpressError.js");
 const ExpressError = require("express-session");
-
+const passport = require("passport");
+const LocalStrategy = require("passport-local")
+const User = require("./models/user.js")
 // Models
 const Listing = require("./models/listing.js");
 const Review = require("./models/review.js");
@@ -40,16 +42,11 @@ const sessionOptions = {
 app.use(session(sessionOptions));
 app.use(flash());
 
-// Passport Setup (if needed)
-// const passport = require("passport");
-// const LocalStrategy = require("passport-local");
-// const User = require("./models/user.js");
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser()); //store user related info.
+passport.deserializeUser(User.deserializeUser());
 
 // Flash & Locals Middleware
 app.use((req, res, next) => {
@@ -57,6 +54,7 @@ app.use((req, res, next) => {
     // console.log(res.locals.success);
     
     res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;
     next();
 });
 
@@ -74,7 +72,7 @@ app.use("/listings/:id/reviews", reviewRoutes);
 
 // Root Route
 app.get("/", (req, res) => {
-    res.send("Welcome to Wanderlust");
+    res.send("Welcome to Sighseers");
 });
 
 // Error Handling

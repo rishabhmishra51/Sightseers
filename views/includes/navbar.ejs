@@ -19,11 +19,19 @@
       <!-- Add Login, Logout, and Sign Up Buttons -->
       <div class="d-flex align-items-center">
         <!-- Login Button -->
+         <% if(!currUser){
+          %>
+         
         <a href="/login" class="btn btn-outline-primary me-2">Login</a>
         <!-- Logout Button (Replace with conditional rendering if needed) -->
-        <a href="/logout" class="btn btn-outline-danger me-2">Logout</a>
-        <!-- Sign Up Button -->
-        <a href="/signup" class="btn btn-primary">Sign Up</a>
+       
+
+    
+        <a href="/signup" class="btn btn-primary">Sign Up</a><%}%>
+         <% if(currUser){
+          %>
+         
+        <a href="/logout" class="btn btn-outline-danger me-2">Logout</a><%}%>
       </div>
     </div>
   </div>

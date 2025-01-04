@@ -1,23 +1,43 @@
-<% layout("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate") %>
 <div class="row mt-3">
-<div class="col-6 offset-3">
-     <form action="/listings" method="get" class="needs-validation" novalidate>
-      
-      <div class="mb-3">
-            <h1 class=" offset-1"><b>Signup for Sightseers</b></h1>
-            <label for="Username" class="form-label">Username</label>
-            <input type="text"  name="listing[Username]" class="form-control" required>
-            <div class="valid-feedback">Looks good.</div>
-           </div>
-
-           
-      
-            <label for="Password" class="form-label">Password</label>
-            <input type="password"  name="listing[Password]" class="form-control" required>
-             <br>
-          
-            <button class="offset-5 btn btn-success">Signup</button>
-         
-     </form>
+  <div class="col-6 offset-3">
+    <form action="/login" method="post" class="needs-validation" novalidate>
+      <div class="text-center mb-4">
+        <h1><b>Login for Sightseers</b></h1>
       </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="form-control"
+          placeholder="Enter your username"
+          required
+          aria-describedby="usernameHelp"
+        />
+        <div class="invalid-feedback">Please enter your username.</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="Enter your password"
+          required
+          aria-describedby="passwordHelp"
+          autocomplete="off"
+        />
+        <div class="invalid-feedback">Please enter your password.</div>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success">Login</button>
+      </div>
+      <div class="text-center mt-3">
+        <a href="/forgot-password" class="text-muted">Forgot Password?</a>
+      </div>
+    </form>
+  </div>
 </div>
