@@ -5,26 +5,25 @@ const ExpressError = require("../Utils/ExpressError.js");
 const Listing = require("../models/listing.js");
 const { isOwner,isLoggedIn } = require("../middleware.js");
 const listingController = require("../controllers/listing.js");
+
+router
+.route("/")
 // Index Route
-router.get("/", wrapAsync(listingController.index));
+.get( wrapAsync(listingController.index))
+// Create Listing
+.post(isLoggedIn, wrapAsync(listingController.createListing));
 
 // New Listing Form
 router.get("/new", isLoggedIn,listingController.renderNewForm);
 
-
-// Create Listing
-router.post("/",isLoggedIn, wrapAsync(listingController.createListing));
-
+router.route("/:id")
 // Show Listing
-router.get("/:id", wrapAsync(listingController.showListing));
+.get( wrapAsync(listingController.showListing))
+// Update Listing
+.put(isLoggedIn,isOwner,wrapAsync(listingController.updateListing))
+// Delete Listing
+.delete(isLoggedIn,isOwner, wrapAsync(listingController.deleteListing));
 
 // Edit Listing Form
 router.get("/:id/edit", isLoggedIn ,isOwner,wrapAsync(listingController.editListing));
-
-// Update Listing
-router.put("/:id", isLoggedIn,isOwner,wrapAsync(listingController.updateListing));
-
-// Delete Listing
-router.delete("/:id",isLoggedIn,isOwner, wrapAsync(listingController.deleteListing));
-
 module.exports = router;

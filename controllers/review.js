@@ -14,10 +14,11 @@ module.exports.createReview = async (req, res) => {
      res.redirect(`/listings/${listing._id}`);
  }
 
- module.exports.deleteReview =async (req, res) => {
+ module.exports.destroyReview =async (req, res) => {
      const { id, reviewId } = req.params;
      await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
      await Review.findByIdAndDelete(reviewId);
      req.flash("success", "Successfully deleted the review!");
      res.redirect(`/listings/${id}`);
  }
+
