@@ -14,10 +14,11 @@ router
 // Index Route
 .get( wrapAsync(listingController.index))
 // Create Listing
-// .post(isLoggedIn, wrapAsync(listingController.createListing));
-.post(upload.single('listing[image]'),(req,res)=>{
-     res.send(req.file);
-})
+.post(
+     isLoggedIn,
+     upload.single('listing[image]'), //multer will process
+      wrapAsync(listingController.createListing));
+
 
 // New Listing Form
 router.get("/new", isLoggedIn,listingController.renderNewForm);
@@ -26,7 +27,7 @@ router.route("/:id")
 // Show Listing
 .get( wrapAsync(listingController.showListing))
 // Update Listing
-.put(isLoggedIn,isOwner,wrapAsync(listingController.updateListing))
+.put(isLoggedIn,isOwner, upload.single('listing[image]'), wrapAsync(listingController.updateListing))
 // Delete Listing
 .delete(isLoggedIn,isOwner, wrapAsync(listingController.deleteListing));
 

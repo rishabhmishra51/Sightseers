@@ -10,7 +10,7 @@ const storage = new CloudinaryStorage({
      cloudinary: cloudinary,
      params: {
        folder: "Sightseers_DEV",
-       allowerdFormats :["png","jpeg","jpg"],
+       allowerdFormats :["png","jpeg","jpg","NEF"],
        },
    });
 

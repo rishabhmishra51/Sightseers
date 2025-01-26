@@ -12,7 +12,7 @@
                <br>
      <h3>Edit your list</h3>
    
-     <form method="post" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation">
+     <form method="post" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
           <div class="mb-3">
                <label for="title" class="form-label">Title</label>
                <input type="text" value="<%=listing.title%>" name="listing[title]" class="form-control" required>
@@ -24,10 +24,14 @@
                <input name="listing[description]" value="<%=listing.description%>" type="text" class="form-control" required>
                <div class="invalid-feedback">Please Write Shorter Description</div> 
           </div>
-          
           <div class="mb-3">
-               <label for="image" class="form-label">Image-Link</label>
-               <input type="text" value="<%=listing.image%>" name="listing[image]" class="form-control">
+              
+             
+          </div>
+
+          <div class="mb-3">
+               <label for="image" class="form-label">Upload New Image</label>
+               <input type="file"  name="listing[image]" class="form-control">
              
           </div>
           
