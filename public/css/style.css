@@ -114,3 +114,7 @@ show page */
      color: black;
      background-color: red;
 }
+#map{
+     height:400px;
+     width:400px;
+}

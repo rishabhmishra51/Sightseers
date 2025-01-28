@@ -76,9 +76,9 @@ app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
 
 // Root Route
-app.get("/", (req, res) => {
-    res.send("Welcome to Sighseers");
-});
+// app.get("/", (req, res) => {
+//     res.send("Welcome to Sighseers");
+// });
 
 // Error Handling
 app.all("*", (req, res, next) => {
