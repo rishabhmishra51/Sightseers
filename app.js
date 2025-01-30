@@ -2,13 +2,13 @@ if(process.env.NODE_ENV != "production"){
     require('dotenv').config();
 }
 
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
 // const ExpressError = require("./Utils/ExpressError.js");
@@ -24,6 +24,7 @@ const Review = require("./models/review.js");
 const reviewRoutes = require("./routes/review.js");
 const listingRoutes = require("./routes/listing.js");
 const userRoutes = require("./routes/user.js");
+const { log } = require('console');
 
 // Middleware & Config
 app.engine("ejs", ejsMate);
@@ -34,7 +35,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
+// MongoDB Connection
+const dbUrl = process.env.ATLASDB_URL; 
+async function main() {
+    await mongoose.connect(dbUrl);
+    console.log("Connected to DB");
+}
+main().catch((err) => console.log(err));
+
+const store = MongoStore.create({
+    mongoUrl : dbUrl,
+    crypto:{
+        secret:"mysupersecretcode"
+    },
+    touchAfter : 24*3600,
+});
 const sessionOptions = {
+    store,
     secret: "mysupersecretcode",
     resave: false,
     saveUninitialized: true,
@@ -44,6 +61,11 @@ const sessionOptions = {
         httpOnly: true,
     },
 };
+
+store.on("error",()=>{
+    console.log("Error in MONGO SESSION STORE",err);
+    
+});
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -63,12 +85,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// MongoDB Connection
-async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
-    console.log("Connected to DB");
-}
-main().catch((err) => console.log(err));
+
 
 // Route Mounting
 app.use("/", userRoutes);
