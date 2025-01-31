@@ -1,5 +1,5 @@
 const Listing = require("./models/listing");
-const review = require("../Airbnb/models/review");
+const review = require("./models/review");
 module.exports.isLoggedIn = (req,res,next)=>{ 
      if(!req.isAuthenticated()){
           req.session.redirectUrl = req.originalUrl;
