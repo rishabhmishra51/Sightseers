@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
@@ -11,11 +11,11 @@ const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
-// const ExpressError = require("./Utils/ExpressError.js");
-const ExpressError = require("express-session");
+const ExpressError = require("./Utils/ExpressError.js");  // ✅ Fixed Import
 const passport = require("passport");
-const LocalStrategy = require("passport-local")
-const User = require("./models/user.js")
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
+
 // Models
 const Listing = require("./models/listing.js");
 const Review = require("./models/review.js");
@@ -24,7 +24,6 @@ const Review = require("./models/review.js");
 const reviewRoutes = require("./routes/review.js");
 const listingRoutes = require("./routes/listing.js");
 const userRoutes = require("./routes/user.js");
-const { log } = require('console');
 
 // Middleware & Config
 app.engine("ejs", ejsMate);
@@ -37,19 +36,34 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 // MongoDB Connection
 const dbUrl = process.env.ATLASDB_URL; 
-async function main() {
-    await mongoose.connect(dbUrl);
-    console.log("Connected to DB");
-}
-main().catch((err) => console.log(err));
 
+async function main() {
+    try {
+        await mongoose.connect(dbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("✅ Connected to MongoDB!");
+    } catch (err) {
+        console.error("❌ MongoDB Connection Error:", err);
+    }
+}
+
+main();
+
+// Session Store
 const store = MongoStore.create({
-    mongoUrl : dbUrl,
-    crypto:{
-        secret:"mysupersecretcode"
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: "mysupersecretcode",
     },
-    touchAfter : 24*3600,
+    touchAfter: 24 * 3600,
 });
+
+store.on("error", (err) => {
+    console.log("❌ Error in MONGO SESSION STORE:", err);
+});
+
 const sessionOptions = {
     store,
     secret: "mysupersecretcode",
@@ -62,30 +76,23 @@ const sessionOptions = {
     },
 };
 
-store.on("error",()=>{
-    console.log("Error in MONGO SESSION STORE",err);
-    
-});
 app.use(session(sessionOptions));
 app.use(flash());
 
+// Passport Authentication
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser()); //store user related info.
+passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Flash & Locals Middleware
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
-    // console.log(res.locals.success);
-    
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
     next();
 });
-
-
 
 // Route Mounting
 app.use("/", userRoutes);
@@ -93,9 +100,9 @@ app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
 
 // Root Route
-// app.get("/", (req, res) => {
-//     res.send("Welcome to Sighseers");
-// });
+app.get("/", (req, res) => {
+    res.render("home"); // Ensure you have a `home.ejs` file inside the `views` folder
+});
 
 // Error Handling
 app.all("*", (req, res, next) => {
@@ -107,6 +114,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error", { message, statusCode });
 });
 
+// Server Start
 app.listen(8080, () => {
-    console.log("Server is running on port 8080");
+    console.log("🚀 Server is running on port 8080");
 });
